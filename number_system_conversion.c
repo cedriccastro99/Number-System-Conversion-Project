@@ -77,36 +77,39 @@ void collectData()
     in *newNode;
     int count=0;
 
-    newNode = (in*)malloc(sizeof(in));
     input = fopen("input.txt","r");
-
-    char temp_Number,temp_currentBase,temp_desiredbase,temp[100];
-    while(fscanf(input,"%s",&temp)!=EOF){
-        if(count == 0){
-            strcpy(newNode->number,temp);
-        }else if(count == 1){
-            strcpy(newNode->current_base,temp);
-        }else if(count == 2){
-            strcpy(newNode->desired_base,temp);
-        }
-        count++;
-        if(count < 3){
-            if(head_input == NULL){
-                head_input = newNode;
-                current = head_input;
-                current->next = NULL;
-            }else{
-                current->next = newNode;
-                current = current->next;
-                current->next = NULL;
+    if(input == NULL){
+        printf("Input File not found!\n");
+    }else{
+        newNode = (in*)malloc(sizeof(in));
+        char temp_Number,temp_currentBase,temp_desiredbase,temp[100];
+        while(fscanf(input,"%s",&temp)!=EOF){
+            if(count == 0){
+                strcpy(newNode->number,temp);
+            }else if(count == 1){
+                strcpy(newNode->current_base,temp);
+            }else if(count == 2){
+                strcpy(newNode->desired_base,temp);
             }
-        }else{
-            newNode = (in*)malloc(sizeof(in));
-            count = 0;
+            count++;
+            if(count < 3){
+                if(head_input == NULL){
+                    head_input = newNode;
+                    current = head_input;
+                    current->next = NULL;
+                }else{
+                    current->next = newNode;
+                    current = current->next;
+                    current->next = NULL;
+                }
+            }else{
+                newNode = (in*)malloc(sizeof(in));
+                count = 0;
+            }
         }
-    }
 
-    fclose(input);
+        fclose(input);
+    }
 }
 
 //save converted number to "output.txt"
@@ -114,6 +117,7 @@ void saveOutput(){
     
     FILE *output;
 
+    //if file not found it will automatically create new output file!
     output = fopen("output.txt","w");
     current_out = head_output;
     while(current_out != NULL){
